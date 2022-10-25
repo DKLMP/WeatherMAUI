@@ -50,22 +50,9 @@ public class HomeViewModel : INotifyPropertyChanged
         });
     }
 
-    private async Task InitDataAsync()
+    private void InitDataAsync()
     {
-        String city = "Maringá";
-        Weather weatherResponse = new Weather();
-        HttpClient client = new HttpClient();
-        client.BaseAddress = new Uri("http://api.openweathermap.org");
-        var response = await client.GetAsync($"/data/2.5/weather?q={city}&appid=3fb5d81f3bb184d558a14daa629db53a&units=metric");
-        response.EnsureSuccessStatusCode();
-
-        var stringResult = await response.Content.ReadAsStringAsync();
-        var rawWeather = JsonConvert.DeserializeObject<OpenWeatherApiResponse>(stringResult);
-        weatherResponse.Max = rawWeather.Main.Temp_max;
-        weatherResponse.Min = rawWeather.Main.Temp_min;
-        weatherResponse.Actually = rawWeather.Main.Temp;
-        weatherResponse.DateCache = DateTime.Now;
-        weatherResponse.City = city;
+        
 
        
         Week = new List<Forecast>
@@ -74,7 +61,7 @@ public class HomeViewModel : INotifyPropertyChanged
                 {
                     DateTime = DateTime.Today.AddDays(1),
                     Day = new Day{ Phrase = "fluent_weather_sunny_high_20_filled" },
-                    Temperature = new Temperature{ Minimum = new Minimum{ Unit = "C", Value = Convert.ToInt16(weatherResponse.Min) }, Maximum = new Maximum { Unit = "C", Value = Convert.ToInt16(weatherResponse.Max) } },
+                   Temperature = new Temperature{ Minimum = new Minimum{ Unit = "F", Value = 52 }, Maximum = new Maximum { Unit = "F", Value = 77 } },
                 },
                 new Forecast
                 {
